@@ -452,9 +452,109 @@ let questions = [
   },
 ];
 
-let currentQuestion = "1";
+let questionsAsked = [];
+let currentQuestion;
+let rightAnswers = 0;
 
 function init() {
-  
+  loadQuestion();
+}
 
+function getRandomQuestion() {
+  let nextQuestion = Math.floor(Math.random() * questions.length);
+
+  if (questionsAsked.length == 0) {
+    return nextQuestion;
+  } else {
+    for (let i = 0; i < questionsAsked.length; i++) {
+      const element = questionsAsked[i];
+      if (element != nextQuestion) {
+        return nextQuestion;
+      } else {
+        let newNextQuestion = Math.floor(Math.random() * questions.length);
+        console.log(`
+          Question already asked!
+          nextQuestion: ${nextQuestion} 
+          QuestionAsked: ${element}
+          newNextQuestion: ${newNextQuestion}
+          `);
+        nextQuestion = newNextQuestion;
+        i--;
+      }
+    }
+  }
+}
+
+function loadQuestion() {
+  let nr = getRandomQuestion();
+  currentQuestion = questions[nr];
+
+  document.getElementById("question").innerHTML =
+    currentQuestion["question"] +
+    `
+  <p class="question-nr" id="question_nr">Frage #${currentQuestion["question_nr"]}</p>
+  `;
+  document.getElementById("answer_a").innerHTML = currentQuestion["answer_a"];
+  document.getElementById("answer_b").innerHTML = currentQuestion["answer_b"];
+  document.getElementById("answer_c").innerHTML = currentQuestion["answer_c"];
+  document.getElementById("answer_d").innerHTML = currentQuestion["answer_d"];
+  document.getElementById("current_question").innerHTML =
+    questionsAsked.length + 1;
+  remQuestionsAsked(nr);
+}
+
+function nextQuestion() {
+  clearCard();
+  loadQuestion();
+}
+
+function clearCard() {
+  document
+    .getElementById("answer_a")
+    .parentNode.classList.remove("border-success");
+  document
+    .getElementById("answer_a")
+    .parentNode.classList.remove("border-danger");
+  document
+    .getElementById("answer_b")
+    .parentNode.classList.remove("border-success");
+  document
+    .getElementById("answer_b")
+    .parentNode.classList.remove("border-danger");
+  document
+    .getElementById("answer_c")
+    .parentNode.classList.remove("border-success");
+  document
+    .getElementById("answer_c")
+    .parentNode.classList.remove("border-danger");
+  document
+    .getElementById("answer_d")
+    .parentNode.classList.remove("border-success");
+  document
+    .getElementById("answer_d")
+    .parentNode.classList.remove("border-danger");
+
+  document.getElementById("answer_btn").disabled = true;
+}
+
+function answer(x) {
+  if (x == currentQuestion["right_answer"]) {
+    document
+      .getElementById(`answer_${x}`)
+      .parentNode.classList.add("border-success");
+    rightAnswers++;
+  } else {
+    document
+      .getElementById(`answer_${x}`)
+      .parentNode.classList.add("border-danger");
+    document
+      .getElementById(`answer_${currentQuestion["right_answer"]}`)
+      .parentNode.classList.add("border-success");
+  }
+
+  document.getElementById("answer_btn").disabled = false;
+}
+
+function remQuestionsAsked(nr) {
+  questionsAsked.push(nr);
 }

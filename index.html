@@ -19,49 +19,42 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body>
+  <body onload="init()">
     <main>
-
       <div class="card c-container">
         <img src="./img/card-header.jpg" class="card-img-top" alt="..." />
         <div class="card-body">
           <div class="c-title">
-            <h5 class="card-title">Card title</h5>
-            <span>Frage #</span>
+            <h5 class="card-title mb-0" id="question">Question</h5>
           </div>
-          <div class="card mb-2">
-            <div class="card-body">
-              This is some text within a card body.
+          <div class="card answer mb-2">
+            <div class="card-body" id="answer_a" onclick="answer('a')">
+              Answer A
             </div>
           </div>
 
-          <div class="card mb-2">
-            <div class="card-body">
-              This is some text within a card body.
+          <div class="card answer mb-2">
+            <div class="card-body" id="answer_b" onclick="answer('b')">
+              Answer B
             </div>
           </div>
 
-          <div class="card mb-2">
-            <div class="card-body">
-              This is some text within a card body.
+          <div class="card answer mb-2">
+            <div class="card-body" id="answer_c" onclick="answer('c')">
+              Answer C
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-body">
-              This is some text within a card body.
+          <div class="card answer">
+            <div class="card-body" id="answer_d" onclick="answer('d')">
+              Answer D
             </div>
           </div>
 
           <div class="c-footer">
-            <span>
-              Frage <b>1</b> von <b>5</b>
-            </span>
-            <button class="btn btn-primary">Nächste Frage</button>
-
+            <span> Frage <b id="current_question">1</b> von <b>5</b> </span>
+            <button id="answer_btn" class="btn btn-primary" onclick="nextQuestion()" disabled>Nächste Frage</button>
           </div>
-      
-   
         </div>
       </div>
     </main>

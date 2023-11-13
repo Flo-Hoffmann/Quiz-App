@@ -1,4 +1,9 @@
+body {
+  background-color: rgba(0 0 0 0.1);
+}
+
 main {
+  background-color: rgba(0, 0, 0, 0.05);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -6,11 +11,31 @@ main {
 }
 
 .c-container {
-  width: 24rem;
+  width: 40vw;
 }
+
+.card-img-top {
+  height: 150px;
+  object-fit: cover;
+}
+
 .c-title {
   display: flex;
   justify-content: space-between;
+  margin: 0px 0px 16px;
+}
+
+.question-nr {
+  color: #2125295b;
+  font-size: 16px;
+  margin-bottom: 0;
+  overflow-wrap: normal;
+}
+
+.answer:hover {
+  background-color: rgba(0,0,0,0.05);
+  transition: 0.75s;
+
 }
 .c-footer {
   display: flex;
