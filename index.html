@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
     <title>Quiz App</title>
+    <link
+      rel="shortcut icon"
+      href="./img/lightbulb-fill.svg"
+      type="image/x-icon"
+    />
     <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -19,11 +24,28 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body onload="init()">
+  <body onload="loadCard()">
     <main>
       <div class="card c-container">
-        <img src="./img/card-header.jpg" class="card-img-top" alt="..." />
-        <div class="card-body">
+        <img src="./img/card-header.jpg" class="card-img-top" />
+        <div class="card-body end-screen d-none" id="end-screen">
+          <h1>Geschafft!</h1>
+          <img src="./img/brain_640.png" alt="brain" />
+          <span class="pb-3">
+            Du hast <b id="result">x</b> von <b>5</b> Fragen richtig
+            beantwortet!
+          </span>
+          <button class="btn btn-primary" onclick="window.location.reload()">
+            Nochmal
+          </button>
+        </div>
+        <div class="progress m-3 mb-0" id="progress" role="progressbar">
+          <div
+            id="progress_bar"
+            class="progress-bar progress-bar-striped"
+          ></div>
+        </div>
+        <div class="card-body" id="question_body">
           <div class="c-title">
             <h5 class="card-title mb-0" id="question">Question</h5>
           </div>
@@ -53,7 +75,14 @@
 
           <div class="c-footer">
             <span> Frage <b id="current_question">1</b> von <b>5</b> </span>
-            <button id="answer_btn" class="btn btn-primary" onclick="nextQuestion()" disabled>Nächste Frage</button>
+            <button
+              id="answer_btn"
+              class="btn btn-primary"
+              onclick="loadNextQuestion()"
+              disabled
+            >
+              weiter
+            </button>
           </div>
         </div>
       </div>

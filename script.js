@@ -455,10 +455,9 @@ let questions = [
 let questionsAsked = [];
 let currentQuestion;
 let rightAnswers = 0;
-
-function init() {
-  loadQuestion();
-}
+let AUDIO_SUCCESS = new Audio("audio/success.mp3");
+let AUDIO_ERROR = new Audio("audio/error.mp3");
+let AUDIO_END = new Audio("audio/won.mp3");
 
 function getRandomQuestion() {
   let nextQuestion = Math.floor(Math.random() * questions.length);
@@ -485,15 +484,23 @@ function getRandomQuestion() {
   }
 }
 
-function loadQuestion() {
+function loadCard() {
   let nr = getRandomQuestion();
   currentQuestion = questions[nr];
 
+  if (questionsAsked.length >= 5) {
+    showEndScreen();
+  } else {
+    loadQuestion(currentQuestion, nr);
+  }
+}
+
+function loadQuestion(currentQuestion, nr) {
   document.getElementById("question").innerHTML =
     currentQuestion["question"] +
     `
-  <p class="question-nr" id="question_nr">Frage #${currentQuestion["question_nr"]}</p>
-  `;
+    <p class="question-nr" id="question_nr">Frage #${currentQuestion["question_nr"]}</p>
+    `;
   document.getElementById("answer_a").innerHTML = currentQuestion["answer_a"];
   document.getElementById("answer_b").innerHTML = currentQuestion["answer_b"];
   document.getElementById("answer_c").innerHTML = currentQuestion["answer_c"];
@@ -503,58 +510,74 @@ function loadQuestion() {
   remQuestionsAsked(nr);
 }
 
-function nextQuestion() {
-  clearCard();
-  loadQuestion();
-}
-
-function clearCard() {
-  document
-    .getElementById("answer_a")
-    .parentNode.classList.remove("border-success");
-  document
-    .getElementById("answer_a")
-    .parentNode.classList.remove("border-danger");
-  document
-    .getElementById("answer_b")
-    .parentNode.classList.remove("border-success");
-  document
-    .getElementById("answer_b")
-    .parentNode.classList.remove("border-danger");
-  document
-    .getElementById("answer_c")
-    .parentNode.classList.remove("border-success");
-  document
-    .getElementById("answer_c")
-    .parentNode.classList.remove("border-danger");
-  document
-    .getElementById("answer_d")
-    .parentNode.classList.remove("border-success");
-  document
-    .getElementById("answer_d")
-    .parentNode.classList.remove("border-danger");
-
-  document.getElementById("answer_btn").disabled = true;
-}
-
 function answer(x) {
   if (x == currentQuestion["right_answer"]) {
     document
       .getElementById(`answer_${x}`)
-      .parentNode.classList.add("border-success");
+      .parentNode.classList.add("bg-success");
+    AUDIO_SUCCESS.play();
     rightAnswers++;
   } else {
     document
       .getElementById(`answer_${x}`)
-      .parentNode.classList.add("border-danger");
+      .parentNode.classList.add("bg-danger");
     document
       .getElementById(`answer_${currentQuestion["right_answer"]}`)
-      .parentNode.classList.add("border-success");
+      .parentNode.classList.add("bg-success");
+    AUDIO_ERROR.play();
   }
-
+  disableAnswers();
   document.getElementById("answer_btn").disabled = false;
+}
+
+function loadNextQuestion() {
+  clearCard();
+  loadCard();
+  enableAnswers();
+  advanceProgressBar();
+}
+
+function clearCard() {
+  document.getElementById("answer_a").parentNode.classList.remove("bg-success");
+  document.getElementById("answer_a").parentNode.classList.remove("bg-danger");
+  document.getElementById("answer_b").parentNode.classList.remove("bg-success");
+  document.getElementById("answer_b").parentNode.classList.remove("bg-danger");
+  document.getElementById("answer_c").parentNode.classList.remove("bg-success");
+  document.getElementById("answer_c").parentNode.classList.remove("bg-danger");
+  document.getElementById("answer_d").parentNode.classList.remove("bg-success");
+  document.getElementById("answer_d").parentNode.classList.remove("bg-danger");
+  document.getElementById("answer_btn").disabled = true;
+}
+
+function disableAnswers() {
+  document.getElementById("answer_a").removeAttribute("onclick");
+  document.getElementById("answer_b").removeAttribute("onclick");
+  document.getElementById("answer_c").removeAttribute("onclick");
+  document.getElementById("answer_d").removeAttribute("onclick");
+}
+
+function enableAnswers() {
+  document.getElementById("answer_a").setAttribute("onclick", "answer('a')");
+  document.getElementById("answer_b").setAttribute("onclick", "answer('b')");
+  document.getElementById("answer_c").setAttribute("onclick", "answer('c')");
+  document.getElementById("answer_d").setAttribute("onclick", "answer('d')");
+}
+
+function showEndScreen() {
+  document.getElementById("result").innerHTML = rightAnswers;
+  document.getElementById("end-screen").classList.remove("d-none");
+  document.getElementById("question_body").classList.add("d-none");
+  document.getElementById("progress").classList.add("d-none");
+  AUDIO_END.play();
 }
 
 function remQuestionsAsked(nr) {
   questionsAsked.push(nr);
+}
+
+function advanceProgressBar() {
+  element = document.getElementById("progress_bar");
+  currentPos = element.style.width;
+  newPos = Number(currentPos.slice(0, -1)) + 20;
+  element.style.width = newPos + "%";
 }
