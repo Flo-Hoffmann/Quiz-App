@@ -462,25 +462,16 @@ let AUDIO_END = new Audio("audio/won.mp3");
 function getRandomQuestion() {
   let nextQuestion = Math.floor(Math.random() * questions.length);
 
-  if (questionsAsked.length == 0) {
-    return nextQuestion;
-  } else {
-    for (let i = 0; i < questionsAsked.length; i++) {
-      const element = questionsAsked[i];
-      if (element != nextQuestion) {
-        return nextQuestion;
-      } else {
-        let newNextQuestion = Math.floor(Math.random() * questions.length);
-        console.log(`
-          Question already asked!
-          nextQuestion: ${nextQuestion} 
-          QuestionAsked: ${element}
-          newNextQuestion: ${newNextQuestion}
-          `);
-        nextQuestion = newNextQuestion;
-        i--;
-      }
-    }
+  if (questionsAsked.length == 0) return nextQuestion;
+
+  for (let i = 0; i < questionsAsked.length; i++) {
+    const element = questionsAsked[i];
+    
+    if (element != nextQuestion) return nextQuestion;
+
+    let newNextQuestion = Math.floor(Math.random() * questions.length);
+    nextQuestion = newNextQuestion;
+    i--;
   }
 }
 

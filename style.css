@@ -39,6 +39,7 @@ main {
 .answer:hover {
   background-color: rgba(0, 0, 0, 0.05);
   transition: 0.75s;
+  cursor: pointer;
 }
 .c-footer {
   display: flex;
